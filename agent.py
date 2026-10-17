@@ -8,7 +8,7 @@ import requests
 MAX_STEPS = 6
 HTTP_TIMEOUT = 10
 
-SYSTEM_PROMPT = """You are the Konaseema Travels AI trip planner.
+SYSTEM_PROMPT = """You are the TripMitra AI trip planner.
 
 You can call tools to gather facts before answering:
 - search_brochures: facts about destinations, attractions, hotels and package prices. Use it for anything destination-specific.

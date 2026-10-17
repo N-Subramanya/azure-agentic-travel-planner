@@ -12,7 +12,7 @@
         justify-content: center;
         align-items: stretch;
         min-height: 100vh;
-        background-image: url('{{ url_for('static', filename='images/konaseema.jpg') }}?v=2');
+        background-image: url('{{ url_for('static', filename='images/hero.svg') }}?v=2');
         background-size: cover;
         background-position: center center;
         position: relative;
@@ -165,7 +165,7 @@ function fillSearch(text) {
     <div class="homePage">
 
         <div class="hero-top">
-            <div class="subtitle">Explore Konaseema hotels, reviews, and local insights</div>
+            <div class="subtitle">Search our travel brochures: destinations, attractions and tips</div>
         </div>
 
         <div class="hero-bottom">
@@ -175,7 +175,7 @@ function fillSearch(text) {
                         id="searchInput"
                         type="text" 
                         name="search" 
-                        placeholder="Search for hotels, reviews, locations..." 
+                        placeholder="Search destinations, attractions, places..." 
                         required>
                     <button type="submit">Search</button>
                 </div>
@@ -183,14 +183,14 @@ function fillSearch(text) {
 
             <div class="examples">
             Try:
-            <span onclick="fillSearch('Amalapuram hotels')">Amalapuram hotels</span>
-            <span onclick="fillSearch('Hotels near Draksharamam')">Near Draksharamam</span>
-            <span onclick="fillSearch('Konaseema backwaters stays')">Backwaters stays</span>
+            <span onclick="fillSearch('Ladakh monasteries')">Ladakh monasteries</span>
+            <span onclick="fillSearch('Hampi temples')">Hampi temples</span>
+            <span onclick="fillSearch('Konaseema backwaters')">Konaseema backwaters</span>
         </div>
         </div>
 
         <div class="image">
-            <img src="{{ url_for('static', filename='images/konaseema.jpg') }}">
+            <img src="{{ url_for('static', filename='images/hero.svg') }}">
         </div>
 
     </div>

@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1e1b4b"/>
+      <stop offset="35%" stop-color="#7c3aed"/>
+      <stop offset="62%" stop-color="#f472b6"/>
+      <stop offset="80%" stop-color="#fb923c"/>
+      <stop offset="100%" stop-color="#fbbf24"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#fff7ed"/>
+      <stop offset="45%" stop-color="#fde68a"/>
+      <stop offset="100%" stop-color="#fb923c" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.85"/>
+      <stop offset="40%" stop-color="#9d174d" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#sky)"/>
+  <circle cx="1180" cy="640" r="260" fill="url(#sun)"/>
+  <circle cx="1180" cy="640" r="95" fill="#fff7ed" opacity="0.95"/>
+
+  <!-- far mountains -->
+  <path d="M0 640 L180 470 L330 580 L520 380 L700 560 L860 450 L1040 600 L1260 420 L1460 580 L1640 470 L1920 610 L1920 700 L0 700 Z" fill="#6d28d9" opacity="0.45"/>
+  <!-- near hills -->
+  <path d="M0 700 C200 610 380 650 560 620 C760 590 900 680 1120 650 C1360 615 1560 670 1920 630 L1920 720 L0 720 Z" fill="#3b0764" opacity="0.75"/>
+
+  <!-- water -->
+  <rect x="0" y="715" width="1920" height="365" fill="url(#water)"/>
+  <g stroke="#fde68a" stroke-linecap="round" opacity="0.55">
+    <line x1="1080" y1="760" x2="1280" y2="760" stroke-width="6"/>
+    <line x1="1110" y1="800" x2="1250" y2="800" stroke-width="5"/>
+    <line x1="1140" y1="840" x2="1220" y2="840" stroke-width="4"/>
+    <line x1="1160" y1="880" x2="1200" y2="880" stroke-width="3"/>
+  </g>
+
+  <!-- boat -->
+  <path d="M520 860 L760 860 L720 890 L560 890 Z" fill="#0f172a"/>
+  <line x1="640" y1="860" x2="640" y2="770" stroke="#0f172a" stroke-width="5"/>
+  <path d="M645 775 L700 850 L645 850 Z" fill="#0f172a" opacity="0.85"/>
+
+  <!-- palms left -->
+  <g fill="#0b1020">
+    <path d="M150 1080 C160 900 190 760 240 640 L254 646 C210 770 186 905 182 1080 Z"/>
+    <path d="M248 640 C190 600 120 610 60 660 C130 628 190 628 250 650 Z"/>
+    <path d="M248 640 C300 590 380 585 440 620 C370 610 310 618 252 652 Z"/>
+    <path d="M248 640 C230 570 250 520 290 490 C270 540 266 590 256 648 Z"/>
+    <path d="M248 640 C310 640 360 670 390 720 C340 690 300 675 250 652 Z"/>
+    <path d="M248 640 C190 650 150 690 130 740 C170 700 210 680 252 652 Z"/>
+    <path d="M330 1080 C336 940 352 840 380 760 L392 764 C368 845 356 945 356 1080 Z"/>
+    <path d="M386 760 C346 730 296 736 256 770 C304 750 344 750 388 770 Z"/>
+    <path d="M386 760 C426 726 482 724 520 750 C470 744 428 750 388 772 Z"/>
+    <path d="M386 760 C372 712 388 680 414 660 C400 696 396 726 392 768 Z"/>
+  </g>
+  <!-- palm right -->
+  <g fill="#0b1020">
+    <path d="M1700 1080 C1694 930 1676 820 1640 720 L1652 714 C1690 815 1710 925 1724 1080 Z"/>
+    <path d="M1646 716 C1700 680 1770 684 1830 726 C1764 702 1706 702 1648 728 Z"/>
+    <path d="M1646 716 C1596 676 1530 670 1470 704 C1536 690 1594 698 1644 728 Z"/>
+    <path d="M1646 716 C1660 660 1644 620 1610 596 C1628 640 1634 680 1640 724 Z"/>
+    <path d="M1646 716 C1600 720 1560 750 1540 796 C1580 760 1610 744 1648 728 Z"/>
+  </g>
+  <!-- foreground bank -->
+  <path d="M0 1000 C300 960 560 1010 900 990 C1240 970 1560 1010 1920 980 L1920 1080 L0 1080 Z" fill="#0b1020"/>
+</svg>

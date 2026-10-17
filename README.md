@@ -24,7 +24,7 @@
 
 ## 🚀 Overview
 
-**Konaseema Travels** is a demo travel brand. Customers ask natural-language questions such as
+**TripMitra** (*mitra* = friend) is a demo travel brand. Customers ask natural-language questions such as
 *"What's the best time to visit the Kerala backwaters?"* and get answers **grounded only in the company's own brochures**, with links to the sources.
 
 <p align="center">
