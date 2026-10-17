@@ -28,7 +28,8 @@
 *"What's the best time to visit the Kerala backwaters?"* and get answers **grounded only in the company's own brochures**, with links to the sources.
 
 <p align="center">
-  <img src="static/images/konaseema.jpg" alt="Konaseema Travels" width="80%">
+  <img src="docs/images/agent-preview.svg" alt="AI Trip Planner: the agent searches brochures, checks weather and estimates budget before planning a 4-day Ladakh trip" width="90%"><br>
+  <sub><i>AI Trip Planner: the agent picks its tools, then plans the trip (illustrative preview)</i></sub>
 </p>
 
 The app has three modes:
