@@ -22,8 +22,13 @@
   <!-- page -->
   <rect x="0" y="44" width="1200" height="716" fill="#f7f9fc"/>
   <rect x="0" y="44" width="1200" height="56" fill="#ffffff"/>
-  <rect x="30" y="58" width="28" height="28" rx="6" fill="#14532d"/>
-  <text x="44" y="78" text-anchor="middle" font-size="15">📍</text>
+  <!-- TripMitra logo (same as static/images/logo.svg, scaled to 28px) -->
+  <g transform="translate(30 58) scale(0.4375)">
+    <rect width="64" height="64" rx="14" fill="url(#intro)"/>
+    <circle cx="45" cy="19" r="8" fill="#ff7a18"/>
+    <path d="M28 52 C28 52 14 37 14 27 a14 14 0 0 1 28 0 C42 37 28 52 28 52 Z" fill="#ffffff"/>
+    <circle cx="28" cy="27" r="5.5" fill="#ff7a18"/>
+  </g>
   <text x="70" y="79" font-size="19" font-weight="700" fill="#2c3e50">TripMitra</text>
   <text x="890" y="78" font-size="14" fill="#1e88e5">💬 Ask (RAG)</text>
   <text x="1010" y="78" font-size="14" fill="#1e88e5">🤖 Trip Planner (Agent)</text>
