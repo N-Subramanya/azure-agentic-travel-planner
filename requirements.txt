@@ -1,0 +1,6 @@
+flask
+azure-search-documents
+openai
+gunicorn==21.2.0
+waitress==2.1.2
+python-dotenv

@@ -1,0 +1,105 @@
+# CI/CD for the RAG travel assistant: Build → Deploy to Azure App Service → Smoke test
+#
+# Prerequisites (see docs/azure-setup.md):
+#   - Service connection  : azure-service-connection (Azure Resource Manager)
+#   - Variable group      : rag-app-settings (endpoints + secret keys, keys locked 🔒)
+#   - Environment         : production (add an approval check if you want a manual gate)
+
+trigger:
+  branches:
+    include: [main]
+
+variables:
+  - group: rag-app-settings
+  - name: azureSubscription
+    value: azure-service-connection
+  - name: webAppName
+    value: rag-app-<your-unique-id>
+  - name: pythonVersion
+    value: "3.11"
+
+stages:
+  - stage: Build
+    displayName: Build & package
+    jobs:
+      - job: build
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: $(pythonVersion)
+            displayName: Use Python $(pythonVersion)
+
+          - script: |
+              python -m pip install --upgrade pip
+              pip install -r requirements.txt ruff
+            displayName: Install dependencies
+
+          - script: ruff check --select E9,F63,F7,F82 .
+            displayName: Lint
+
+          - task: CopyFiles@2
+            displayName: Stage app files
+            inputs:
+              Contents: |
+                app.py
+                rag_app.py
+                requirements.txt
+                templates/**
+                static/**
+              TargetFolder: $(Build.ArtifactStagingDirectory)/app
+
+          - task: ArchiveFiles@2
+            displayName: Archive → app.zip
+            inputs:
+              rootFolderOrFile: $(Build.ArtifactStagingDirectory)/app
+              includeRootFolder: false
+              archiveType: zip
+              archiveFile: $(Build.ArtifactStagingDirectory)/app.zip
+              replaceExistingArchive: true
+
+          - publish: $(Build.ArtifactStagingDirectory)/app.zip
+            artifact: drop
+            displayName: Publish artifact
+
+  - stage: Deploy
+    displayName: Deploy to App Service
+    dependsOn: Build
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - deployment: deploy
+        pool:
+          vmImage: ubuntu-latest
+        environment: production
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureWebApp@1
+                  displayName: Deploy web app
+                  inputs:
+                    azureSubscription: ${{ variables.azureSubscription }}
+                    appType: webAppLinux
+                    appName: $(webAppName)
+                    package: $(Pipeline.Workspace)/drop/app.zip
+                    deploymentMethod: zipDeploy
+                    runtimeStack: "PYTHON|3.11"
+                    startUpCommand: gunicorn --bind=0.0.0.0 --workers=4 rag_app:app
+                    appSettings: >-
+                      -SCM_DO_BUILD_DURING_DEPLOYMENT true
+                      -SEARCH_SERVICE_ENDPOINT $(SEARCH_SERVICE_ENDPOINT)
+                      -SEARCH_SERVICE_QUERY_KEY $(SEARCH_SERVICE_QUERY_KEY)
+                      -SEARCH_INDEX_NAME $(SEARCH_INDEX_NAME)
+                      -AZURE_OPENAI_ENDPOINT $(AZURE_OPENAI_ENDPOINT)
+                      -AZURE_OPENAI_KEY $(AZURE_OPENAI_KEY)
+                      -AZURE_OPENAI_DEPLOYMENT $(AZURE_OPENAI_DEPLOYMENT)
+
+                - script: |
+                    url="https://$(webAppName).azurewebsites.net/health"
+                    for i in $(seq 1 10); do
+                      if curl -fsS "$url"; then echo; echo "✅ App is healthy"; exit 0; fi
+                      echo "Waiting for app to start ($i/10)..."; sleep 15
+                    done
+                    echo "❌ Health check failed: $url"; exit 1
+                  displayName: Smoke test /health

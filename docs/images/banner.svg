@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1a2e"/>
+      <stop offset="55%" stop-color="#0f3b4c"/>
+      <stop offset="100%" stop-color="#14532d"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ff7a18"/>
+      <stop offset="50%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#34d399"/>
+    </linearGradient>
+    <linearGradient id="sun" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#ff7a18"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="300" fill="url(#bg)"/>
+  <!-- sunset + water motif -->
+  <circle cx="1040" cy="150" r="70" fill="url(#sun)" opacity="0.85"/>
+  <rect x="880" y="150" width="320" height="150" fill="#0b1a2e" opacity="0.55"/>
+  <g stroke="#fbbf24" stroke-opacity="0.45" stroke-width="3" stroke-linecap="round">
+    <line x1="990" y1="172" x2="1090" y2="172"/>
+    <line x1="1005" y1="188" x2="1075" y2="188"/>
+    <line x1="1020" y1="204" x2="1060" y2="204"/>
+  </g>
+  <!-- palms -->
+  <g fill="#052e16" opacity="0.9">
+    <path d="M905 300 C910 230 915 190 930 150 L936 152 C922 192 918 232 915 300 Z"/>
+    <path d="M932 150 C900 135 880 140 862 160 C885 148 905 148 932 154 Z"/>
+    <path d="M932 150 C960 128 985 130 1002 146 C980 140 958 142 934 156 Z"/>
+    <path d="M932 150 C915 120 920 105 935 92 C930 112 935 128 936 152 Z"/>
+    <path d="M932 150 C955 150 975 165 982 185 C965 170 950 163 932 156 Z"/>
+  </g>
+
+  <text x="70" y="112" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="50" font-weight="700" fill="#ffffff">Azure RAG Travel Assistant</text>
+  <text x="70" y="160" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="25" font-weight="300" fill="#d1fae5">Ask about destinations. Get answers grounded in your documents.</text>
+  <rect x="70" y="182" width="400" height="5" rx="2.5" fill="url(#accent)"/>
+
+  <g font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" font-weight="600">
+    <rect x="70" y="214" width="170" height="38" rx="19" fill="#0078D4"/>
+    <text x="155" y="239" text-anchor="middle" fill="#fff">Azure AI Search</text>
+    <rect x="252" y="214" width="170" height="38" rx="19" fill="#10a37f"/>
+    <text x="337" y="239" text-anchor="middle" fill="#fff">Azure OpenAI</text>
+    <rect x="434" y="214" width="110" height="38" rx="19" fill="#334155"/>
+    <text x="489" y="239" text-anchor="middle" fill="#fff">Flask</text>
+    <rect x="556" y="214" width="160" height="38" rx="19" fill="#ff7a18"/>
+    <text x="636" y="239" text-anchor="middle" fill="#fff">Azure DevOps</text>
+  </g>
+</svg>

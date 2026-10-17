@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Konaseema Travels</title>
+
+        <style>
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            color: #fff;
+        }
+
+        .container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            background-image: url('{{ url_for('static', filename='images/konaseema.jpg') }}?v=2');
+            background-size: cover;
+            background-position: center center;
+            position: relative;
+            padding-top: 100px; /* account for fixed header */
+            padding-bottom: 40px;
+        }
+
+        .container::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: 0;
+        }
+
+        .brand {
+            font-size: 42px;
+            font-weight: 700;
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: #fff;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+        }
+
+        .tagline {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: rgba(255,255,255,0.9);
+            position: relative;
+            z-index: 1;
+        }
+
+        .search-box {
+                background: white;
+                padding: 12px;
+                border-radius: 12px;
+                display: flex;
+                width: 500px;
+                box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+                margin: 0 auto 10px;
+            }
+
+        .hero-top {
+            padding-top: 60px;
+            padding-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-bottom {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            padding: 10px;
+        }
+
+        button {
+            background: #ff7a18; /* travel orange */
+            border: none;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #e66a10;
+        }
+
+        .examples {
+            margin-top: 25px;
+            font-size: 14px;
+            color: #000;
+        }
+
+        .examples span {
+            display: inline-block;
+            margin: 5px;
+            padding: 6px 10px;
+            background: #ffffff;
+            color: #000;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 1px solid rgba(0,0,0,0.08);
+        }
+
+        .examples span:hover {
+            background: #f5f5f5;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+
+    <script>
+        function fillQuery(text) {
+            document.getElementById("question").value = text;
+        }
+    </script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="hero-top">
+        <div class="tagline">Ask about Konaseema hotels, reviews, and local insights</div>
+    </div>
+
+    <div class="hero-bottom">
+        <form action="/ask">
+            <div class="search-box">
+                <input 
+                    id="question"
+                    type="text" 
+                    name="question" 
+                    placeholder="e.g. Which hotel in Konaseema has the best reviews?" 
+                    required>
+                <button type="submit">Ask</button>
+            </div>
+        </form>
+
+        <!-- UPDATED EXAMPLES -->
+        <div class="examples">
+        Try:
+        <span onclick="fillQuery('Best hotels in Amalapuram')">Best hotels in Amalapuram</span>
+        <span onclick="fillQuery('Luxury hotels with great amenities in Konaseema')">Luxury stays</span>
+        <span onclick="fillQuery('Hotels near Draksharamam')">Near Draksharamam</span>
+    </div>
+
+</div>
+
+<div class="footer">
+    Powered by Azure AI Search + OpenAI
+</div>
+
+</body>
+</html>
