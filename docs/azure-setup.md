@@ -59,6 +59,7 @@ The pipeline sets the startup command and app settings, so you don't need to con
 | `AZURE_OPENAI_ENDPOINT` | |
 | `AZURE_OPENAI_KEY` | 🔒 |
 | `AZURE_OPENAI_DEPLOYMENT` | |
+| `FLASK_SECRET_KEY` | 🔒 |
 
 ### Environment
 **Pipelines → Environments → New** → `production`. Optionally add an **Approvals** check for a manual gate.

@@ -34,8 +34,8 @@
     <path d="M932 150 C955 150 975 165 982 185 C965 170 950 163 932 156 Z"/>
   </g>
 
-  <text x="70" y="112" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="50" font-weight="700" fill="#ffffff">Azure RAG Travel Assistant</text>
-  <text x="70" y="160" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="25" font-weight="300" fill="#d1fae5">Ask about destinations. Get answers grounded in your documents.</text>
+  <text x="70" y="112" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="50" font-weight="700" fill="#ffffff">Azure AI Travel Assistant</text>
+  <text x="70" y="160" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="25" font-weight="300" fill="#d1fae5">RAG answers + an agentic trip planner, grounded in your documents.</text>
   <rect x="70" y="182" width="400" height="5" rx="2.5" fill="url(#accent)"/>
 
   <g font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="17" font-weight="600">
@@ -47,5 +47,7 @@
     <text x="489" y="239" text-anchor="middle" fill="#fff">Flask</text>
     <rect x="556" y="214" width="160" height="38" rx="19" fill="#ff7a18"/>
     <text x="636" y="239" text-anchor="middle" fill="#fff">Azure DevOps</text>
+    <rect x="728" y="214" width="130" height="38" rx="19" fill="#8B5CF6"/>
+    <text x="793" y="239" text-anchor="middle" fill="#fff">Agentic AI</text>
   </g>
 </svg>

@@ -1,6 +1,6 @@
 import os
 import logging
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, session, redirect, url_for
 from dotenv import load_dotenv
 
 from azure.core.credentials import AzureKeyCredential
@@ -8,10 +8,19 @@ from azure.search.documents import SearchClient
 
 from openai import AzureOpenAI
 
+from agent import TripPlannerAgent
+
 # Load env
 load_dotenv()
 
 app = Flask(__name__)
+# Signs the session cookie that holds chat history. Must be the same on every gunicorn worker.
+app.secret_key = os.getenv("FLASK_SECRET_KEY") or os.urandom(32)
+if not os.getenv("FLASK_SECRET_KEY"):
+    logging.warning("FLASK_SECRET_KEY not set; using a random key (chat history won't survive restarts or span workers)")
+
+MAX_HISTORY_TURNS = 3
+MAX_STORED_ANSWER_CHARS = 600
 
 def get_env(name, default=None):
     value = os.getenv(name, default)
@@ -35,7 +44,7 @@ deployment_name = get_env("AZURE_OPENAI_DEPLOYMENT")
 
 client = AzureOpenAI(
     api_key=openai_key,
-    api_version="2024-02-01",
+    api_version="2024-10-21",
     azure_endpoint=openai_endpoint
 )
 
@@ -114,6 +123,53 @@ def home():
 @app.route("/health")
 def health():
     return {"status": "ok"}
+
+
+# -------------------------------
+# AGENT (tool-calling trip planner)
+# -------------------------------
+agent = TripPlannerAgent(client, deployment_name, search_query)
+
+
+@app.route("/agent", methods=["GET", "POST"])
+def agent_chat():
+    history = session.get("history", [])
+    if request.method == "GET":
+        return render_template("agent.html", history=history)
+
+    question = request.form.get("question", "").strip()
+    if not question:
+        return redirect(url_for("agent_chat"))
+
+    try:
+        answer, steps, sources = agent.run(question, history)
+    except Exception:
+        logging.exception("Agent run failed")
+        return render_template(
+            "error.html",
+            error_message="The trip planner hit a problem. Please try again."
+        ), 500
+
+    # Browsers drop cookies over ~4 KB: keep the last few turns, with answers shortened
+    session["history"] = (history + [
+        {"role": "user", "content": question[:300]},
+        {"role": "assistant", "content": answer[:MAX_STORED_ANSWER_CHARS]},
+    ])[-MAX_HISTORY_TURNS * 2:]
+
+    return render_template(
+        "agent.html",
+        history=history,
+        question=question,
+        answer=answer,
+        steps=steps,
+        sources=sources,
+    )
+
+
+@app.route("/agent/reset", methods=["POST"])
+def agent_reset():
+    session.pop("history", None)
+    return redirect(url_for("agent_chat"))
 
 
 @app.route("/ask", methods=["GET"])

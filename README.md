@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/images/banner.svg" alt="Azure RAG Travel Assistant" width="100%">
+  <img src="docs/images/banner.svg" alt="Azure AI Travel Assistant: RAG + Agentic Trip Planner" width="100%">
 </p>
 
 <p align="center">
@@ -8,15 +8,16 @@
   <img src="https://img.shields.io/badge/Flask-Web_App-000000?logo=flask&logoColor=white" alt="Flask">
   <img src="https://img.shields.io/badge/Azure_AI_Search-Retrieval-0078D4?logo=microsoftazure&logoColor=white" alt="Azure AI Search">
   <img src="https://img.shields.io/badge/Azure_OpenAI-GPT--4.1-10A37F?logo=openai&logoColor=white" alt="Azure OpenAI">
+  <img src="https://img.shields.io/badge/Agentic_AI-Tool_Calling-8B5CF6" alt="Agentic AI">
   <img src="https://img.shields.io/badge/App_Service-Linux-0089D6?logo=microsoftazure&logoColor=white" alt="App Service">
   <img src="https://img.shields.io/badge/Azure_DevOps-CI%2FCD-0078D7?logo=azuredevops&logoColor=white" alt="Azure DevOps">
   <img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT">
 </p>
 
 <p align="center">
-  <b>Retrieval-Augmented Generation on Azure, built end to end.</b><br>
-  Documents are indexed by Azure AI Search, answered by Azure OpenAI GPT-4.1, served by Flask on App Service,
-  and shipped by an Azure DevOps YAML pipeline.
+  <b>RAG + an agentic AI trip planner on Azure, built end to end.</b><br>
+  Documents are indexed by Azure AI Search. A GPT-4.1 agent decides when to search them, check live weather and estimate budgets.
+  The app is served by Flask on App Service and shipped by an Azure DevOps YAML pipeline.
 </p>
 
 ---
@@ -30,12 +31,44 @@
   <img src="static/images/konaseema.jpg" alt="Konaseema Travels" width="80%">
 </p>
 
-The app has two modes:
+The app has three modes:
 
-| Mode | Entry point | What it does |
+| Mode | Route | What it does |
 |---|---|---|
-| 🔎 **Smart search** | `app.py` | Keyword search over AI-enriched documents, showing key phrases, locations and people |
-| 💬 **RAG Q&A** | `rag_app.py` | Retrieves the top matching chunks and has GPT-4.1 write an answer with citations |
+| 🔎 **Smart search** | `app.py` → `/search` | Keyword search over AI-enriched documents, showing key phrases, locations and people |
+| 💬 **RAG Q&A** | `rag_app.py` → `/ask` | Fixed pipeline: retrieve the top chunks, then GPT-4.1 answers with citations |
+| 🤖 **AI Trip Planner** | `rag_app.py` → `/agent` | **Agentic**: GPT-4.1 decides which tools to call, in a loop, then plans the trip, with chat memory for follow-ups |
+
+## 🤖 Agent Mode: RAG vs Agentic
+
+|  | 💬 RAG Q&A | 🤖 AI Trip Planner |
+|---|---|---|
+| Who decides the steps? | The code: always search once, then answer | **The model**: it chooses tools and their arguments |
+| Tools | Search only | Search, live weather and budget estimate |
+| Steps per question | 1 retrieval + 1 LLM call | Loop of up to 6 steps, with parallel tool calls |
+| Follow-ups | ❌ | ✅ Remembers the conversation ("make it 3 days instead") |
+| Transparency | Sources | Sources **plus a trace of every tool call** |
+
+```mermaid
+flowchart TD
+    Q(["🧳 Plan 4 days in Ladakh for 2 in June, ₹80k"]) --> LLM{🤖 GPT-4.1<br/>decide next step}
+    LLM -->|tool call| T1[🔎 search_brochures<br/>Azure AI Search]
+    LLM -->|tool call| T2[🌤️ get_weather<br/>Open-Meteo]
+    LLM -->|tool call| T3[💰 estimate_budget<br/>INR rates]
+    T1 --> OBS[📥 tool results added to the conversation]
+    T2 --> OBS
+    T3 --> OBS
+    OBS --> LLM
+    LLM -->|enough information| A(["📝 Day-by-day plan + packing list + budget check + sources"])
+```
+
+| Tool | Purpose | Backed by |
+|---|---|---|
+| `search_brochures(query)` | Destination facts, attractions, packages and prices | Azure AI Search index |
+| `get_weather(city, country_code, month?)` | Live 7-day forecast, or travel-month averages | [Open-Meteo](https://open-meteo.com) (free, no key) |
+| `estimate_budget(destination, days, travellers, style)` | Rough trip cost: stay, food, transport, activities | Built-in INR rate table |
+
+**Guardrails:** a 6-step limit, after which the model is forced to answer without calling more tools. Destination facts are grounded in brochure results only. A failed tool returns an error the model can recover from. Errors are logged on the server and never shown to users.
 
 ## 🧠 How RAG Works Here
 
@@ -83,6 +116,8 @@ flowchart LR
 
 | | Feature | Details |
 |---|---|---|
+| 🤖 | **Agentic trip planner** | GPT-4.1 tool calling: search, weather and budget tools in a reasoning loop, with a visible step trace |
+| 🧠 | **Conversation memory** | Follow-up questions keep their context, stored in a size-capped, signed session cookie |
 | 🔎 | **AI-enriched search** | Blob indexer with cognitive skills that extract key phrases, locations and persons |
 | 💬 | **Grounded answers** | Context-only prompting, citations and low temperature (0.3) |
 | 📎 | **Source citations** | Every answer links back to the brochure it came from |
@@ -125,9 +160,10 @@ The full pipeline is in [`azure-pipelines.yml`](azure-pipelines.yml).
 
 ```text
 azure-rag-travel-assistant/
-├── rag_app.py              # 💬 RAG Q&A app (retrieve → generate → cite)
+├── rag_app.py              # 💬 RAG Q&A + 🤖 agent routes (/ask, /agent, /health)
+├── agent.py                # 🤖 tool definitions + agent loop
 ├── app.py                  # 🔎 keyword search app
-├── templates/              # Jinja2 pages (home, results, search, error)
+├── templates/              # Jinja2 pages (home, results, agent chat, search, error)
 ├── static/                 # CSS + images
 ├── data/collateral/        # sample travel brochures to index
 ├── azure-pipelines.yml     # ADO multi-stage pipeline
@@ -151,7 +187,7 @@ source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 
 cp .env.example .env             # then fill in your endpoints and keys
-python rag_app.py                # → http://127.0.0.1:5000
+python rag_app.py                # → http://127.0.0.1:5000  (agent: /agent)
 ```
 
 **3. Deploy.** Create the ADO service connection, the `rag-app-settings` variable group and the `production` environment, then run `azure-pipelines.yml`.
@@ -167,12 +203,13 @@ python rag_app.py                # → http://127.0.0.1:5000
 
 - [x] RAG Q&A with citations on Azure AI Search and Azure OpenAI
 - [x] YAML multi-stage Azure DevOps pipeline with a smoke test
+- [x] Agentic trip planner: tool calling for search, weather and budget, with a step trace
+- [x] Chat history and follow-up questions
 - [ ] Managed Identity and Key Vault references (remove API keys entirely)
 - [ ] Infrastructure as code (Terraform/Bicep) for all Azure resources
 - [ ] Hybrid and vector search with semantic ranking
-- [ ] Agentic mode: tool calling for itinerary planning, weather and bookings
-- [ ] Chat history and follow-up questions
-- [ ] Application Insights telemetry and dashboards
+- [ ] More tools: currency conversion, live hotel availability, booking hand-off
+- [ ] Application Insights telemetry and token/cost tracking per agent run
 
 ## 📄 License
 

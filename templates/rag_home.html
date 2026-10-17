@@ -121,6 +121,20 @@
             background: #f5f5f5;
         }
 
+        .agent-link {
+            background: rgba(255,255,255,0.95);
+            color: #0f3b4c;
+            padding: 10px 18px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .agent-link:hover {
+            background: #ffffff;
+        }
+
         .footer {
             position: absolute;
             bottom: 20px;
@@ -165,6 +179,8 @@
         <span onclick="fillQuery('Luxury hotels with great amenities in Konaseema')">Luxury stays</span>
         <span onclick="fillQuery('Hotels near Draksharamam')">Near Draksharamam</span>
     </div>
+
+        <a class="agent-link" href="{{ url_for('agent_chat') }}">🤖 Try the AI Trip Planner (agent) →</a>
 
 </div>
 
