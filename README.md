@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/N-Subramanya/azure-rag-travel-assistant/actions/workflows/ci.yml"><img src="https://github.com/N-Subramanya/azure-rag-travel-assistant/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/N-Subramanya/azure-agentic-travel-planner/actions/workflows/ci.yml"><img src="https://github.com/N-Subramanya/azure-agentic-travel-planner/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <img src="https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white" alt="Python">
   <img src="https://img.shields.io/badge/Flask-Web_App-000000?logo=flask&logoColor=white" alt="Flask">
   <img src="https://img.shields.io/badge/Azure_AI_Search-Retrieval-0078D4?logo=microsoftazure&logoColor=white" alt="Azure AI Search">
@@ -159,7 +159,7 @@ The full pipeline is in [`azure-pipelines.yml`](azure-pipelines.yml).
 ## 📂 Project Structure
 
 ```text
-azure-rag-travel-assistant/
+azure-agentic-travel-planner/
 ├── rag_app.py              # 💬 RAG Q&A + 🤖 agent routes (/ask, /agent, /health)
 ├── agent.py                # 🤖 tool definitions + agent loop
 ├── app.py                  # 🔎 keyword search app
@@ -179,8 +179,8 @@ azure-rag-travel-assistant/
 
 **2. Run locally**
 ```bash
-git clone https://github.com/N-Subramanya/azure-rag-travel-assistant.git
-cd azure-rag-travel-assistant
+git clone https://github.com/N-Subramanya/azure-agentic-travel-planner.git
+cd azure-agentic-travel-planner
 
 python -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
